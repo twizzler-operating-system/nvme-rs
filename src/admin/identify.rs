@@ -1,5 +1,6 @@
 use crate::ds::{
     controller::ControllerId,
+    namespace::NamespaceId,
     queue::subentry::{CommandDword0, CommonCommand, Dptr},
 };
 
@@ -36,6 +37,7 @@ struct Identify {
     dw14: IdentifyDword14,
     cdw0: CommandDword0,
     dptr: Dptr,
+    nsid: NamespaceId,
 }
 
 impl From<Identify> for CommonCommand {
@@ -46,5 +48,22 @@ impl From<Identify> for CommonCommand {
             .with_cdw11(i.dw11.into())
             .with_cdw14(i.dw14.into())
             .with_dptr(i.dptr)
+            .with_nsid(i.nsid)
     }
+}
+
+#[derive(BitfieldSpecifier)]
+#[bits = 8]
+enum CommandSetIdentifier {
+    NVM,
+    KeyValue,
+    Zoned,
+}
+
+enum IdentifyCNSValue {
+    IdentifyNamespace(NamespaceId),
+    IdentifyController,
+    ActiveNamespaceIdList(NamespaceId),
+    NamespaceIdentificationDescriptorList(NamespaceId),
+    IOCommandSetSpecificIdentifyNamespace(NamespaceId, CommandSetIdentifier),
 }
