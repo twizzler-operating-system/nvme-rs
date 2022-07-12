@@ -1,13 +1,13 @@
 use crate::{ds::queue::comentry::CommonCompletion, host_memory::VirtualRegion};
 
-struct SubmissionQueue<const stride: usize> {
+pub struct SubmissionQueue<const STRIDE: usize> {
     tail: u16,
     head: u16,
     len: u16,
     memory: VirtualRegion,
 }
 
-impl<const stride: usize> SubmissionQueue<stride> {
+impl<const STRIDE: usize> SubmissionQueue<STRIDE> {
     pub fn is_full(&self) -> bool {
         self.head == (self.tail + 1) % self.len
     }
@@ -16,20 +16,20 @@ impl<const stride: usize> SubmissionQueue<stride> {
         self.tail == self.head
     }
 
-    pub fn submit(&mut self, data: &[u8; stride]) -> Option<u16> {
+    pub fn submit(&mut self, data: &[u8; STRIDE]) -> Option<u16> {
         if self.is_full() {
             return None;
         }
         let tail = self.tail;
         self.tail = (self.tail + 1) % self.len;
         let ptr = self.get_entry_pointer(tail);
-        let slice = unsafe { core::slice::from_raw_parts_mut(ptr, stride) };
+        let slice = unsafe { core::slice::from_raw_parts_mut(ptr, STRIDE) };
         slice.copy_from_slice(data);
         Some(tail)
     }
 
     fn get_entry_pointer(&mut self, ent: u16) -> *mut u8 {
-        unsafe { self.memory.base_mut::<u8>().add(ent as usize * stride) }
+        unsafe { self.memory.base_mut::<u8>().add(ent as usize * STRIDE) }
     }
 
     pub fn update_head(&mut self, head: u16) {
@@ -44,20 +44,24 @@ impl<const stride: usize> SubmissionQueue<stride> {
     }
 
     pub fn stride(&self) -> usize {
-        stride
+        STRIDE
     }
 }
 
-struct CompletionQueue<const stride: usize> {
+pub struct CompletionQueue<const STRIDE: usize> {
     head: u16,
     len: u16,
     phase: bool,
     memory: VirtualRegion,
 }
 
-impl<const stride: usize> CompletionQueue<stride> {
+impl<const STRIDE: usize> CompletionQueue<STRIDE> {
+    pub fn stride(&self) -> usize {
+        STRIDE
+    }
+
     fn get_entry_pointer(&self, ent: u16) -> *const u8 {
-        unsafe { self.memory.base::<u8>().add(ent as usize * stride) }
+        unsafe { self.memory.base::<u8>().add(ent as usize * STRIDE) }
     }
 
     fn get_entry_compl_pointer(&self, ent: u16) -> *const CommonCompletion {
@@ -67,7 +71,7 @@ impl<const stride: usize> CompletionQueue<stride> {
 
     fn get_entry_slice(&self, ent: u16) -> &[u8] {
         let ptr = self.get_entry_pointer(ent);
-        unsafe { core::slice::from_raw_parts(ptr, stride) }
+        unsafe { core::slice::from_raw_parts(ptr, STRIDE) }
     }
 
     pub fn ready(&self) -> bool {
@@ -79,7 +83,7 @@ impl<const stride: usize> CompletionQueue<stride> {
         entry.phase() != self.phase
     }
 
-    pub fn get_completion(&mut self, output: &mut [u8; stride]) -> Option<u16> {
+    pub fn get_completion(&mut self, output: &mut [u8; STRIDE]) -> Option<u16> {
         // TODO: volatile?
         let head = self.head;
         let entry = unsafe {
