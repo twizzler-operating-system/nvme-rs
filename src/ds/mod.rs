@@ -44,3 +44,15 @@ impl From<Seconds> for Duration {
         Duration::from_millis(m.0 as u64 * 1000)
     }
 }
+
+use modular_bitfield::prelude::*;
+
+#[bitfield]
+#[derive(BitfieldSpecifier)]
+pub struct HalfSeconds(u8);
+
+impl From<HalfSeconds> for Duration {
+    fn from(m: HalfSeconds) -> Self {
+        Duration::from_millis(m.get_0() as u64 * 500)
+    }
+}

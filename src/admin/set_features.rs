@@ -46,13 +46,13 @@ impl SetFeatures {
         Self {
             dw10: SetFeaturesDword10::new().with_save(save).with_fid(fid),
             dw14: SetFeaturesDword14::new().with_uuid_index(uuid_index.into()),
-            dptr,
             cdw0: CommandDword0::build(
                 AdminCommand::CreateCompletionQueue.into(),
                 cid,
                 FuseSpec::Normal,
                 dptr.psdt(false),
             ),
+            dptr,
         }
     }
 }

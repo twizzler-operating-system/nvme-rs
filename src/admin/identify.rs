@@ -84,7 +84,7 @@ impl Identify {
     }
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Clone, Copy)]
 #[bits = 8]
 enum CommandSetIdentifier {
     NVM,

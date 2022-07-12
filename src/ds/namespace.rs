@@ -1,4 +1,4 @@
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone, Copy)]
 #[repr(transparent)]
 pub struct NamespaceId(u32);
 
@@ -16,7 +16,7 @@ impl<'a, const bytes: usize> NamespaceList<'a, bytes> {
     }
 }
 
-struct NamespaceListIter<'a, const bytes: usize> {
+pub struct NamespaceListIter<'a, const bytes: usize> {
     list: NamespaceList<'a, bytes>,
     pos: usize,
 }
