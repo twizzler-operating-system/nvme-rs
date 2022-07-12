@@ -1,7 +1,12 @@
 use crate::ds::{
+    cmd::admin::AdminCommand,
     controller::ControllerId,
     namespace::NamespaceId,
-    queue::subentry::{CommandDword0, CommonCommand, Dptr},
+    queue::{
+        subentry::{CommandDword0, CommonCommand, Dptr, FuseSpec},
+        CommandId,
+    },
+    uuid::UuidIndex,
 };
 
 use modular_bitfield::prelude::*;
@@ -26,7 +31,7 @@ struct IdentifyDword11 {
 #[bitfield(bits = 32)]
 #[repr(u32)]
 struct IdentifyDword14 {
-    uuid_idx: B7,
+    uuid_idx: UuidIndex,
     #[skip]
     res: B25,
 }
@@ -52,6 +57,33 @@ impl From<Identify> for CommonCommand {
     }
 }
 
+impl Identify {
+    fn new(
+        cid: CommandId,
+        cns: IdentifyCNSValue,
+        dptr: Dptr,
+        uuid_index: Option<UuidIndex>,
+    ) -> Self {
+        Self {
+            dw10: IdentifyDword10::new()
+                .with_cns(cns.cns_value())
+                .with_cntid(cns.cntid_value().into()),
+            dw11: IdentifyDword11::new()
+                .with_csi(cns.csi_value())
+                .with_cns_specific_id(cns.specific_id_value()),
+            dw14: IdentifyDword14::new().with_uuid_idx(uuid_index.into()),
+            cdw0: CommandDword0::build(
+                AdminCommand::Identify.into(),
+                cid,
+                FuseSpec::Normal,
+                dptr.psdt(false),
+            ),
+            dptr,
+            nsid: cns.nsid().unwrap_or(NamespaceId::default()),
+        }
+    }
+}
+
 #[derive(BitfieldSpecifier)]
 #[bits = 8]
 enum CommandSetIdentifier {
@@ -66,4 +98,55 @@ enum IdentifyCNSValue {
     ActiveNamespaceIdList(NamespaceId),
     NamespaceIdentificationDescriptorList(NamespaceId),
     IOCommandSetSpecificIdentifyNamespace(NamespaceId, CommandSetIdentifier),
+}
+
+impl IdentifyCNSValue {
+    fn nsid(&self) -> Option<NamespaceId> {
+        match self {
+            IdentifyCNSValue::IdentifyNamespace(n) => Some(*n),
+            IdentifyCNSValue::IdentifyController => None,
+            IdentifyCNSValue::ActiveNamespaceIdList(n) => Some(*n),
+            IdentifyCNSValue::NamespaceIdentificationDescriptorList(n) => Some(*n),
+            IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(n, _) => Some(*n),
+        }
+    }
+    fn cns_value(&self) -> u8 {
+        match self {
+            IdentifyCNSValue::IdentifyNamespace(_) => 0,
+            IdentifyCNSValue::IdentifyController => 1,
+            IdentifyCNSValue::ActiveNamespaceIdList(_) => 2,
+            IdentifyCNSValue::NamespaceIdentificationDescriptorList(_) => 3,
+            IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(_, _) => 5,
+        }
+    }
+
+    fn csi_value(&self) -> u8 {
+        match self {
+            IdentifyCNSValue::IdentifyNamespace(_) => 0,
+            IdentifyCNSValue::IdentifyController => 0,
+            IdentifyCNSValue::ActiveNamespaceIdList(_) => 0,
+            IdentifyCNSValue::NamespaceIdentificationDescriptorList(_) => 0,
+            IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(_, c) => *c as u8,
+        }
+    }
+
+    fn cntid_value(&self) -> u16 {
+        match self {
+            IdentifyCNSValue::IdentifyNamespace(_) => 0,
+            IdentifyCNSValue::IdentifyController => 0,
+            IdentifyCNSValue::ActiveNamespaceIdList(_) => 0,
+            IdentifyCNSValue::NamespaceIdentificationDescriptorList(_) => 0,
+            IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(_, _) => 0,
+        }
+    }
+
+    fn specific_id_value(&self) -> u16 {
+        match self {
+            IdentifyCNSValue::IdentifyNamespace(_) => 0,
+            IdentifyCNSValue::IdentifyController => 0,
+            IdentifyCNSValue::ActiveNamespaceIdList(_) => 0,
+            IdentifyCNSValue::NamespaceIdentificationDescriptorList(_) => 0,
+            IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(_, _) => 0,
+        }
+    }
 }

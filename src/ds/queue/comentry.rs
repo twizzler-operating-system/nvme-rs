@@ -3,7 +3,7 @@ use modular_bitfield::prelude::*;
 // 2b::3.3.3.2
 
 #[repr(C)]
-struct CommonCompletion {
+pub struct CommonCompletion {
     dw0: u32,
     dw1: u32,
     sqinfo: SqInfo,
@@ -13,7 +13,7 @@ struct CommonCompletion {
 #[bitfield(bits = 32)]
 struct CompletionStatus {
     cid: B16,
-    phase: B1,
+    phase: bool,
     status: StatusField,
 }
 
@@ -31,4 +31,10 @@ struct StatusField {
     retry_delay: B2,
     more: B1,
     do_not_retry: B1,
+}
+
+impl CommonCompletion {
+    pub fn phase(&self) -> bool {
+        self.status.phase()
+    }
 }

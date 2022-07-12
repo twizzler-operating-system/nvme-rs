@@ -28,6 +28,7 @@ name = "nvme"
 version = "0.1.0"
 dependencies = [
  "modular-bitfield",
+ "volatile_cell",
 ]
 
 [[package]]
@@ -47,6 +48,12 @@ checksum = "3bcdf212e9776fbcb2d23ab029360416bb1706b1aea2d1a5ba002727cbcab804"
 dependencies = [
  "proc-macro2",
 ]
+
+[[package]]
+name = "rust-libcore"
+version = "0.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae7a33830cc02d03ae1e50057d0e4e4b1a84be09bfb158bf95e9c3f3373aa453"
 
 [[package]]
 name = "static_assertions"
@@ -70,3 +77,12 @@ name = "unicode-ident"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5bd2fe26506023ed7b5e1e315add59d6f584c621d037f9368fea9cfb988f368c"
+
+[[package]]
+name = "volatile_cell"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e89c44c56cc47ef6c4fccb52a3a5c48c4306929294fdf4ffe67321a0071bba72"
+dependencies = [
+ "rust-libcore",
+]

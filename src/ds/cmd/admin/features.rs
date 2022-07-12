@@ -1,0 +1,41 @@
+use modular_bitfield::prelude::*;
+
+#[derive(BitfieldSpecifier)]
+#[bits = 8]
+pub enum FeatureId {
+    Arbitration = 1,
+    PowerManagement,
+    LBARangeType,
+    TemperatureThreshold,
+    ErrorRecovery,
+    VolatileWriteCache,
+    NumberOfQueues,
+    InterruptCoalescing,
+    InterruptVectorConfig,
+    WriteAtomicityNormal,
+    AsyncEventConfig,
+    AutonomousPowerStateTransition,
+    HostMemoryBuffer,
+    Timestamp,
+    KeepAliveTimer,
+    HostControlledThermalManagement,
+    NonOperationalPowerStateConfig,
+    ReadRecoveryLevelConfig,
+    PredictableLatencyModeConfig,
+    PredictableLatencyModeWindow,
+    LBAStatusInfoReportInterval,
+    HostBehaviorSupport,
+    SanitizeConfig,
+    EnduranceGroupEventConfig,
+    IOCommandSetProfile,
+    SpinupControl,
+
+    EnhancedControllerMetadata = 0x7d,
+    ControllerMetadata,
+    NamespaceMetadata,
+    SoftwareProgressMarker,
+    HostIdentifier,
+    ReservationNotificationMask,
+    ReservationPersistence,
+    NamespaceWriteProtectionConfig,
+}

@@ -61,6 +61,7 @@ struct IdentifyControllerDataStructure {
     pub nvm_set_ident_maximum: u16,
     pub endurance_group_ident_maximum: u16,
     pub ana_transition_time: Seconds,
+    res_todo: [u8; 3750],
 }
 
 const SizeChecker: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];

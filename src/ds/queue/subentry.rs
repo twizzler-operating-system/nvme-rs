@@ -145,3 +145,18 @@ pub enum Dptr {
     Prp(Address, Address),
     Sgl(SglDescriptor),
 }
+
+impl Dptr {
+    pub fn psdt(&self, meta_is_sgl: bool) -> Psdt {
+        match self {
+            Dptr::Prp(_, _) => Psdt::Prp,
+            Dptr::Sgl(_) => {
+                if meta_is_sgl {
+                    Psdt::SglAndMeta
+                } else {
+                    Psdt::Sgl
+                }
+            }
+        }
+    }
+}

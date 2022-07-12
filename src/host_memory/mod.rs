@@ -22,3 +22,13 @@ impl PrpListOrBuffer {
         }
     }
 }
+
+impl VirtualRegion {
+    pub fn base<T>(&self) -> *const T {
+        todo!()
+    }
+
+    pub fn base_mut<T>(&mut self) -> *mut T {
+        todo!()
+    }
+}

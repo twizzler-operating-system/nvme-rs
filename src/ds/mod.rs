@@ -7,6 +7,7 @@ pub mod namespace;
 pub mod queue;
 pub mod sgl;
 pub mod status;
+pub mod uuid;
 
 pub type Address = u64;
 

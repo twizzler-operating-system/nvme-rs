@@ -1,3 +1,5 @@
+pub mod features;
+
 #[repr(u8)]
 pub enum AdminCommand {
     DeleteSubmissionQueue,
