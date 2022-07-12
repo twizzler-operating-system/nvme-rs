@@ -1,21 +1,26 @@
 use volatile_cell::VolatileCell;
 
-use self::{capabilities::ControllerCap, config::ControllerConfig};
+use self::{
+    aqa::AdminQueueAttributes, capabilities::ControllerCap, config::ControllerConfig,
+    status::ControllerStatus,
+};
 
+pub mod aqa;
 pub mod capabilities;
 pub mod config;
+pub mod status;
 
 #[repr(C)]
-struct ControllerProperties {
+pub struct ControllerProperties {
     pub capabilities: VolatileCell<ControllerCap>,
     pub version: VolatileCell<u32>,
     pub int_mask_set: VolatileCell<u32>,
     pub int_mask_clear: VolatileCell<u32>,
     pub configuration: VolatileCell<ControllerConfig>,
     resv: u32,
-    pub status: VolatileCell<u32>,
+    pub status: VolatileCell<ControllerStatus>,
     pub nvm_subsystem_reset: VolatileCell<u32>,
-    pub admin_queue_attr: VolatileCell<u32>,
+    pub admin_queue_attr: VolatileCell<AdminQueueAttributes>,
     pub admin_subqueue_base_addr: VolatileCell<u64>,
     pub admin_comqueue_base_addr: VolatileCell<u64>,
     pub memory_buffer_location: VolatileCell<u32>,
