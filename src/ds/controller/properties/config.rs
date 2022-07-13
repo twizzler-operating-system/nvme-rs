@@ -4,6 +4,7 @@ use modular_bitfield::prelude::*;
 #[repr(u32)]
 pub struct ControllerConfig {
     pub enable: bool,
+    #[skip]
     res: B3,
     pub io_command_set_selected: IOCommandSet,
     pub mem_page_size: B4,
@@ -12,6 +13,7 @@ pub struct ControllerConfig {
     pub io_submission_queue_entry_size: B4,
     pub io_completion_queue_entry_size: B4,
     pub controller_ready_independent_of_media_enable: bool,
+    #[skip]
     res1: B7,
 }
 

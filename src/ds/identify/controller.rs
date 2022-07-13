@@ -3,7 +3,7 @@ use modular_bitfield::prelude::*;
 use crate::ds::{Microseconds, Minutes, OneHundredMilliseconds, Seconds};
 
 #[repr(C)]
-struct IdentifyControllerDataStructure {
+pub struct IdentifyControllerDataStructure {
     pub vendor: u16,
     pub subsystem_vendor_id: u16,
     pub serial_number: [u8; 20],
@@ -61,10 +61,10 @@ struct IdentifyControllerDataStructure {
     pub nvm_set_ident_maximum: u16,
     pub endurance_group_ident_maximum: u16,
     pub ana_transition_time: Seconds,
-    res_todo: [u8; 3750],
+    _res_todo: [u8; 3750],
 }
 
-const SizeChecker: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
+const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
 
 #[bitfield(bits = 8)]
 pub struct MultipathIONamespaceSharingCaps {

@@ -1,13 +1,33 @@
-use crate::{ds::queue::comentry::CommonCompletion, host_memory::VirtualRegion};
+use crate::ds::queue::comentry::CommonCompletion;
 
 pub struct SubmissionQueue<const STRIDE: usize> {
     tail: u16,
     head: u16,
     len: u16,
-    memory: VirtualRegion,
+    memory: *mut u8,
+}
+
+pub enum CreateQueueError {
+    MemoryRegionTooSmall,
+    StrideTooSmall,
 }
 
 impl<const STRIDE: usize> SubmissionQueue<STRIDE> {
+    pub fn new(memory: &mut [u8], nr_entries: u16) -> Result<Self, CreateQueueError> {
+        if nr_entries as usize * STRIDE > memory.len() {
+            return Err(CreateQueueError::MemoryRegionTooSmall);
+        }
+        if STRIDE < 1 {
+            return Err(CreateQueueError::StrideTooSmall);
+        }
+        Ok(Self {
+            head: 0,
+            tail: 0,
+            len: nr_entries,
+            memory: memory.as_mut_ptr(),
+        })
+    }
+
     pub fn is_full(&self) -> bool {
         self.head == (self.tail + 1) % self.len
     }
@@ -29,7 +49,7 @@ impl<const STRIDE: usize> SubmissionQueue<STRIDE> {
     }
 
     fn get_entry_pointer(&mut self, ent: u16) -> *mut u8 {
-        unsafe { self.memory.base_mut::<u8>().add(ent as usize * STRIDE) }
+        unsafe { self.memory.add(ent as usize * STRIDE) }
     }
 
     pub fn update_head(&mut self, head: u16) {
@@ -52,16 +72,31 @@ pub struct CompletionQueue<const STRIDE: usize> {
     head: u16,
     len: u16,
     phase: bool,
-    memory: VirtualRegion,
+    memory: *const u8,
 }
 
 impl<const STRIDE: usize> CompletionQueue<STRIDE> {
+    pub fn new(memory: &[u8], nr_entries: u16) -> Result<Self, CreateQueueError> {
+        if nr_entries as usize * STRIDE > memory.len() {
+            return Err(CreateQueueError::MemoryRegionTooSmall);
+        }
+        if STRIDE < core::mem::size_of::<CommonCompletion>() {
+            return Err(CreateQueueError::StrideTooSmall);
+        }
+        Ok(Self {
+            head: 0,
+            len: nr_entries,
+            phase: false,
+            memory: memory.as_ptr(),
+        })
+    }
+
     pub fn stride(&self) -> usize {
         STRIDE
     }
 
     fn get_entry_pointer(&self, ent: u16) -> *const u8 {
-        unsafe { self.memory.base::<u8>().add(ent as usize * STRIDE) }
+        unsafe { self.memory.add(ent as usize * STRIDE) }
     }
 
     fn get_entry_compl_pointer(&self, ent: u16) -> *const CommonCompletion {

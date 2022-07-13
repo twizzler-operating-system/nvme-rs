@@ -2,14 +2,13 @@ use modular_bitfield::prelude::*;
 
 use crate::{
     ds::{
-        cmd::admin::AdminCommand,
+        cmd::{admin::AdminCommand, PrpListOrBuffer},
         queue::{
             subentry::{CommandDword0, CommonCommand, Dptr, FuseSpec, Psdt},
             CommandId, QueueId, QueueSize,
         },
         Address, InterruptVector,
     },
-    host_memory::PrpListOrBuffer,
 };
 
 // REF: 2b::5.4

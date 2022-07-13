@@ -11,6 +11,10 @@ impl From<u16> for ControllerId {
     }
 }
 
-
+impl From<ControllerId> for u16 {
+    fn from(c: ControllerId) -> Self {
+        c.get_0()
+    }
+}
 
 pub mod properties;
