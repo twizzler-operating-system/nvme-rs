@@ -8,7 +8,7 @@ use super::CommandId;
 // 2b::3.3.3.1
 
 #[bitfield(bits = 32)]
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct CommandDword0 {
     op: B8,
     fuse: FuseSpec,
@@ -28,7 +28,7 @@ impl CommandDword0 {
     }
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
 #[bits = 2]
 pub enum Psdt {
     Prp,
@@ -36,7 +36,7 @@ pub enum Psdt {
     SglAndMeta,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
 #[bits = 2]
 pub enum FuseSpec {
     Normal,
@@ -44,6 +44,7 @@ pub enum FuseSpec {
     FuseSecond,
 }
 
+#[derive(Clone, Copy)]
 #[repr(C)]
 union DptrData {
     prp: [Address; 2],
@@ -56,7 +57,7 @@ impl Default for DptrData {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Clone, Copy)]
 #[repr(C)]
 pub struct CommonCommand {
     cdw0: CommandDword0,

@@ -13,6 +13,7 @@ pub type Address = u64;
 
 pub type InterruptVector = u16;
 
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct OneHundredMilliseconds(u16);
 
 impl From<OneHundredMilliseconds> for Duration {
@@ -21,6 +22,7 @@ impl From<OneHundredMilliseconds> for Duration {
     }
 }
 
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Microseconds(u32);
 
 impl From<Microseconds> for Duration {
@@ -29,6 +31,7 @@ impl From<Microseconds> for Duration {
     }
 }
 
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Minutes(u16);
 
 impl From<Minutes> for Duration {
@@ -37,6 +40,7 @@ impl From<Minutes> for Duration {
     }
 }
 
+#[derive(Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Seconds(u8);
 
 impl From<Seconds> for Duration {
@@ -48,7 +52,7 @@ impl From<Seconds> for Duration {
 use modular_bitfield::prelude::*;
 
 #[bitfield]
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct HalfSeconds(u8);
 
 impl From<HalfSeconds> for Duration {

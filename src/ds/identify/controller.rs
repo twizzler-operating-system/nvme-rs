@@ -2,6 +2,7 @@ use modular_bitfield::prelude::*;
 
 use crate::ds::{Microseconds, Minutes, OneHundredMilliseconds, Seconds};
 
+#[derive(Clone)]
 #[repr(C)]
 pub struct IdentifyControllerDataStructure {
     pub vendor: u16,
@@ -64,9 +65,75 @@ pub struct IdentifyControllerDataStructure {
     _res_todo: [u8; 3750],
 }
 
+impl Default for IdentifyControllerDataStructure {
+    fn default() -> Self {
+        Self {
+            vendor: Default::default(),
+            subsystem_vendor_id: Default::default(),
+            serial_number: Default::default(),
+            model_number: [0; 40],
+            firmware_revision: Default::default(),
+            reccommended_arbitration_burst: Default::default(),
+            ieee_oui_identifier: Default::default(),
+            multipath_io_and_namespace_sharing_caps: Default::default(),
+            max_data_transfer_size: Default::default(),
+            controller_id: Default::default(),
+            version: Default::default(),
+            rtd3_resume_latency: Default::default(),
+            rtd3_entry_latency: Default::default(),
+            optional_async_events_supported: Default::default(),
+            controller_attributes: Default::default(),
+            read_recovery_levels_supported: Default::default(),
+            res0: Default::default(),
+            controller_type: ControllerType::IOController,
+            fru_globally_unique_identifier: Default::default(),
+            command_retry_delay_time_1: Default::default(),
+            command_retry_delay_time_2: Default::default(),
+            command_retry_delay_time_3: Default::default(),
+            res1: [0; 106],
+            res2: Default::default(),
+            nvm_subsystem_report: Default::default(),
+            vpd_write_cycle_info: Default::default(),
+            management_endpoint_capabilities: Default::default(),
+            optional_admin_command_support: Default::default(),
+            abort_command_limit: Default::default(),
+            async_event_request_limit: Default::default(),
+            firmware_updates: Default::default(),
+            log_page_attributes: Default::default(),
+            error_log_page_entries: Default::default(),
+            nr_power_states_support: Default::default(),
+            admin_vendor_specific_command_config: Default::default(),
+            autonomous_power_state_transition_attributes: Default::default(),
+            warning_composite_temp_threshold: Default::default(),
+            critical_composite_temp_threshold: Default::default(),
+            max_time_for_firmware_activation: Default::default(),
+            host_memory_buffer_preferred_size: Default::default(),
+            host_memory_buffer_minimum_size: Default::default(),
+            total_nvm_capacity: Default::default(),
+            unallocated_nvm_capacity: Default::default(),
+            replay_protected_memory_block_support: Default::default(),
+            extended_device_self_test_time: Default::default(),
+            device_self_test_options: Default::default(),
+            firmware_upgrade_granularity: Default::default(),
+            keep_alive_support: Default::default(),
+            host_controlled_thermal_management_attributes: Default::default(),
+            min_thermal_management_temp: Default::default(),
+            max_thermal_management_temp: Default::default(),
+            sanitize_capabilities: Default::default(),
+            host_memory_buffer_min_desc_entry_size: Default::default(),
+            host_memory_buffer_max_desc_entries: Default::default(),
+            nvm_set_ident_maximum: Default::default(),
+            endurance_group_ident_maximum: Default::default(),
+            ana_transition_time: Default::default(),
+            _res_todo: [0; 3750],
+        }
+    }
+}
+
 const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct MultipathIONamespaceSharingCaps {
     #[skip(setters)]
     pub nvm_sub_multiple: B1,
@@ -81,6 +148,7 @@ pub struct MultipathIONamespaceSharingCaps {
 }
 
 #[bitfield(bits = 32)]
+#[derive(Default, Clone)]
 pub struct OptionalAsyncEventsSupported {
     #[skip]
     res: B8,
@@ -111,6 +179,7 @@ pub struct OptionalAsyncEventsSupported {
 }
 
 #[bitfield(bits = 32)]
+#[derive(Default, Clone)]
 pub struct ControllerAttributes {
     #[skip(setters)]
     pub host_id: B1,
@@ -148,8 +217,10 @@ pub struct ControllerAttributes {
     res: B16,
 }
 
+#[derive(Default, Clone)]
 pub struct ReadRecoveryLevelsSupported(u16);
 
+#[derive(Clone)]
 #[repr(u8)]
 pub enum ControllerType {
     Reserved,
@@ -159,6 +230,7 @@ pub enum ControllerType {
 }
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct NvmSubsystemReport {
     #[skip(setters)]
     pub nvme_storage_device: B1,
@@ -169,6 +241,7 @@ pub struct NvmSubsystemReport {
 }
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct VPDWriteCycleInfo {
     #[skip(setters)]
     pub write_cycles_remaining: B7,
@@ -177,6 +250,7 @@ pub struct VPDWriteCycleInfo {
 }
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct ManagementEndpointCapabilities {
     #[skip]
     pub res: B6,
@@ -187,6 +261,7 @@ pub struct ManagementEndpointCapabilities {
 }
 
 #[bitfield(bits = 16)]
+#[derive(Default, Clone)]
 pub struct OptionalAdminCommandSupport {
     #[skip(setters)]
     pub security_send_and_recv: B1,
@@ -215,6 +290,7 @@ pub struct OptionalAdminCommandSupport {
 }
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct FirmwareUpdates {
     #[skip(setters)]
     pub first_firmware_slot_readonly: B1,
@@ -229,6 +305,7 @@ pub struct FirmwareUpdates {
 }
 
 #[bitfield(bits = 8)]
+#[derive(Default, Clone)]
 pub struct LogPageAttributes {
     #[skip(setters)]
     pub per_namespace_smart_log: B1,
@@ -249,6 +326,7 @@ pub struct LogPageAttributes {
 }
 
 #[bitfield(bits = 32)]
+#[derive(Default, Clone)]
 pub struct ReplayProtectedMemoryBlockSupport {
     #[skip(setters)]
     pub nr_rpmb_units: B3,
@@ -262,13 +340,14 @@ pub struct ReplayProtectedMemoryBlockSupport {
     pub access_size: B8,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Clone)]
 #[bits = 3]
 pub enum AuthMethod {
     HmacSha256,
 }
 
 #[bitfield(bits = 32)]
+#[derive(Default, Clone)]
 pub struct SanitizeCapabilities {
     #[skip(setters)]
     pub crypto_erase: B1,

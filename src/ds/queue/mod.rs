@@ -17,6 +17,7 @@ pub struct QueueId(u16);
 
 #[bitfield]
 #[derive(BitfieldSpecifier)]
+#[derive(Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct CommandId(u16);
 

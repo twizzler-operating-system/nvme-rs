@@ -2,6 +2,7 @@ use modular_bitfield::prelude::*;
 
 // 2b::3.3.3.2
 
+#[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct CommonCompletion {
     dw0: u32,
@@ -10,7 +11,19 @@ pub struct CommonCompletion {
     status: CompletionStatus,
 }
 
+impl Default for CommonCompletion {
+    fn default() -> Self {
+        Self {
+            dw0: Default::default(),
+            dw1: Default::default(),
+            sqinfo: SqInfo::new(),
+            status: CompletionStatus::new(),
+        }
+    }
+}
+
 #[bitfield(bits = 32)]
+#[derive(Debug, Clone, Copy)]
 struct CompletionStatus {
     cid: B16,
     phase: bool,
@@ -18,13 +31,14 @@ struct CompletionStatus {
 }
 
 #[bitfield(bits = 32)]
+#[derive(Debug, Clone, Copy)]
 struct SqInfo {
     head: B16,
     sqid: B16,
 }
 
 #[bitfield(bits = 15)]
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Debug, Clone, Copy)]
 struct StatusField {
     code: B8,
     code_type: B3,

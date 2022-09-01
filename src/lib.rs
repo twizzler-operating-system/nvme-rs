@@ -1,3 +1,5 @@
+#![feature(option_result_unwrap_unchecked)]
+
 pub mod admin;
 pub mod ds;
 pub mod hosted;

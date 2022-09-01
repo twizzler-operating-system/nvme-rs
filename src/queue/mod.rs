@@ -7,6 +7,7 @@ pub struct SubmissionQueue<const STRIDE: usize> {
     memory: *mut u8,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Ord, Eq)]
 pub enum CreateQueueError {
     MemoryRegionTooSmall,
     StrideTooSmall,
@@ -45,7 +46,7 @@ impl<const STRIDE: usize> SubmissionQueue<STRIDE> {
         let ptr = self.get_entry_pointer(tail);
         let slice = unsafe { core::slice::from_raw_parts_mut(ptr, STRIDE) };
         slice.copy_from_slice(data);
-        Some(tail)
+        Some(self.tail)
     }
 
     fn get_entry_pointer(&mut self, ent: u16) -> *mut u8 {
