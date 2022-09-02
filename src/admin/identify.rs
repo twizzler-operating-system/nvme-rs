@@ -13,10 +13,10 @@ use modular_bitfield::prelude::*;
 #[bitfield(bits = 32)]
 #[repr(u32)]
 struct IdentifyDword10 {
-    cntid: ControllerId,
+    cns: B8,
     #[skip]
     res: B8,
-    cns: B8,
+    cntid: ControllerId,
 }
 
 #[bitfield(bits = 32)]
@@ -36,7 +36,7 @@ struct IdentifyDword14 {
     res: B25,
 }
 
-struct Identify {
+pub struct Identify {
     dw10: IdentifyDword10,
     dw11: IdentifyDword11,
     dw14: IdentifyDword14,
@@ -58,7 +58,7 @@ impl From<Identify> for CommonCommand {
 }
 
 impl Identify {
-    fn new(
+    pub fn new(
         cid: CommandId,
         cns: IdentifyCNSValue,
         dptr: Dptr,
@@ -86,13 +86,13 @@ impl Identify {
 
 #[derive(BitfieldSpecifier, Clone, Copy)]
 #[bits = 8]
-enum CommandSetIdentifier {
+pub enum CommandSetIdentifier {
     NVM,
     KeyValue,
     Zoned,
 }
 
-enum IdentifyCNSValue {
+pub enum IdentifyCNSValue {
     IdentifyNamespace(NamespaceId),
     IdentifyController,
     ActiveNamespaceIdList(NamespaceId),
@@ -101,7 +101,7 @@ enum IdentifyCNSValue {
 }
 
 impl IdentifyCNSValue {
-    fn nsid(&self) -> Option<NamespaceId> {
+    pub fn nsid(&self) -> Option<NamespaceId> {
         match self {
             IdentifyCNSValue::IdentifyNamespace(n) => Some(*n),
             IdentifyCNSValue::IdentifyController => None,
@@ -110,7 +110,8 @@ impl IdentifyCNSValue {
             IdentifyCNSValue::IOCommandSetSpecificIdentifyNamespace(n, _) => Some(*n),
         }
     }
-    fn cns_value(&self) -> u8 {
+
+    pub fn cns_value(&self) -> u8 {
         match self {
             IdentifyCNSValue::IdentifyNamespace(_) => 0,
             IdentifyCNSValue::IdentifyController => 1,
@@ -120,7 +121,7 @@ impl IdentifyCNSValue {
         }
     }
 
-    fn csi_value(&self) -> u8 {
+    pub fn csi_value(&self) -> u8 {
         match self {
             IdentifyCNSValue::IdentifyNamespace(_) => 0,
             IdentifyCNSValue::IdentifyController => 0,
@@ -130,7 +131,7 @@ impl IdentifyCNSValue {
         }
     }
 
-    fn cntid_value(&self) -> u16 {
+    pub fn cntid_value(&self) -> u16 {
         match self {
             IdentifyCNSValue::IdentifyNamespace(_) => 0,
             IdentifyCNSValue::IdentifyController => 0,
@@ -140,7 +141,7 @@ impl IdentifyCNSValue {
         }
     }
 
-    fn specific_id_value(&self) -> u16 {
+    pub fn specific_id_value(&self) -> u16 {
         match self {
             IdentifyCNSValue::IdentifyNamespace(_) => 0,
             IdentifyCNSValue::IdentifyController => 0,

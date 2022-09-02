@@ -140,6 +140,10 @@ impl CommonCommand {
         let n = self.cdw0.with_cid(cid);
         self.with_cdw0(n)
     }
+
+    pub fn set_cid(&mut self, cid: CommandId) {
+        self.cdw0.set_cid(cid);
+    }
 }
 
 pub enum Dptr {

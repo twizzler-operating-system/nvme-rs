@@ -1,4 +1,4 @@
-use crate::ds::{queue::subentry::Dptr, Address, cmd::PrpListOrBuffer};
+use crate::ds::{cmd::PrpListOrBuffer, queue::subentry::Dptr, Address};
 
 pub struct VirtualRegion<P: PhysicalPageCollection> {
     virt: *mut u8,
@@ -8,8 +8,8 @@ pub struct VirtualRegion<P: PhysicalPageCollection> {
 }
 
 pub trait PhysicalPageCollection {
-    fn get_prp_list_or_buffer(&self) -> Option<PrpListOrBuffer>;
-    fn get_dptr(&self, sgl_allowed: bool) -> Option<Dptr>;
+    fn get_prp_list_or_buffer(&mut self) -> Option<PrpListOrBuffer>;
+    fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr>;
 }
 
 pub enum CacheType {
@@ -17,6 +17,7 @@ pub enum CacheType {
     WriteThrough,
     Uncacheable,
 }
+
 impl PrpListOrBuffer {
     pub fn address(&self) -> Address {
         match self {
@@ -60,11 +61,11 @@ impl<P: PhysicalPageCollection> VirtualRegion<P> {
         self.virt as *mut T
     }
 
-    pub fn get_prp_list_or_buffer(&self) -> Option<PrpListOrBuffer> {
+    pub fn get_prp_list_or_buffer(&mut self) -> Option<PrpListOrBuffer> {
         self.phys_page_list.get_prp_list_or_buffer()
     }
 
-    pub fn get_dptr(&self, sgl_allowed: bool) -> Option<Dptr> {
+    pub fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr> {
         self.phys_page_list.get_dptr(sgl_allowed)
     }
 }

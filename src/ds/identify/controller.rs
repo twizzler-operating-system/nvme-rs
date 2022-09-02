@@ -2,7 +2,7 @@ use modular_bitfield::prelude::*;
 
 use crate::ds::{Microseconds, Minutes, OneHundredMilliseconds, Seconds};
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 #[repr(C)]
 pub struct IdentifyControllerDataStructure {
     pub vendor: u16,
@@ -133,7 +133,7 @@ impl Default for IdentifyControllerDataStructure {
 const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct MultipathIONamespaceSharingCaps {
     #[skip(setters)]
     pub nvm_sub_multiple: B1,
@@ -148,7 +148,7 @@ pub struct MultipathIONamespaceSharingCaps {
 }
 
 #[bitfield(bits = 32)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct OptionalAsyncEventsSupported {
     #[skip]
     res: B8,
@@ -179,7 +179,7 @@ pub struct OptionalAsyncEventsSupported {
 }
 
 #[bitfield(bits = 32)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct ControllerAttributes {
     #[skip(setters)]
     pub host_id: B1,
@@ -217,20 +217,20 @@ pub struct ControllerAttributes {
     res: B16,
 }
 
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct ReadRecoveryLevelsSupported(u16);
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 #[repr(u8)]
 pub enum ControllerType {
-    Reserved,
+    NotReported,
     IOController,
     DiscoveryController,
     AdministrativeController,
 }
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct NvmSubsystemReport {
     #[skip(setters)]
     pub nvme_storage_device: B1,
@@ -241,7 +241,7 @@ pub struct NvmSubsystemReport {
 }
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct VPDWriteCycleInfo {
     #[skip(setters)]
     pub write_cycles_remaining: B7,
@@ -250,7 +250,7 @@ pub struct VPDWriteCycleInfo {
 }
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct ManagementEndpointCapabilities {
     #[skip]
     pub res: B6,
@@ -261,7 +261,7 @@ pub struct ManagementEndpointCapabilities {
 }
 
 #[bitfield(bits = 16)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct OptionalAdminCommandSupport {
     #[skip(setters)]
     pub security_send_and_recv: B1,
@@ -290,7 +290,7 @@ pub struct OptionalAdminCommandSupport {
 }
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct FirmwareUpdates {
     #[skip(setters)]
     pub first_firmware_slot_readonly: B1,
@@ -305,7 +305,7 @@ pub struct FirmwareUpdates {
 }
 
 #[bitfield(bits = 8)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct LogPageAttributes {
     #[skip(setters)]
     pub per_namespace_smart_log: B1,
@@ -326,7 +326,7 @@ pub struct LogPageAttributes {
 }
 
 #[bitfield(bits = 32)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct ReplayProtectedMemoryBlockSupport {
     #[skip(setters)]
     pub nr_rpmb_units: B3,
@@ -340,14 +340,14 @@ pub struct ReplayProtectedMemoryBlockSupport {
     pub access_size: B8,
 }
 
-#[derive(BitfieldSpecifier, Clone)]
+#[derive(BitfieldSpecifier, Clone, Debug)]
 #[bits = 3]
 pub enum AuthMethod {
     HmacSha256,
 }
 
 #[bitfield(bits = 32)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Debug)]
 pub struct SanitizeCapabilities {
     #[skip(setters)]
     pub crypto_erase: B1,

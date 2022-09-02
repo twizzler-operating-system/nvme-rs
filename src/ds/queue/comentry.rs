@@ -1,5 +1,7 @@
 use modular_bitfield::prelude::*;
 
+use super::{CommandId, QueueId};
+
 // 2b::3.3.3.2
 
 #[derive(Debug, Clone, Copy)]
@@ -39,7 +41,7 @@ struct SqInfo {
 
 #[bitfield(bits = 15)]
 #[derive(BitfieldSpecifier, Debug, Clone, Copy)]
-struct StatusField {
+pub struct StatusField {
     code: B8,
     code_type: B3,
     retry_delay: B2,
@@ -50,5 +52,21 @@ struct StatusField {
 impl CommonCompletion {
     pub fn phase(&self) -> bool {
         self.status.phase()
+    }
+
+    pub fn new_sq_head(&self) -> u16 {
+        self.sqinfo.head()
+    }
+
+    pub fn sq_id(&self) -> QueueId {
+        QueueId::new().with_0(self.sqinfo.sqid())
+    }
+
+    pub fn status(&self) -> StatusField {
+        self.status.status()
+    }
+
+    pub fn command_id(&self) -> CommandId {
+        CommandId::new().with_0(self.status.cid())
     }
 }

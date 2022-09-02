@@ -16,10 +16,21 @@ pub struct QueueSize(u16);
 pub struct QueueId(u16);
 
 #[bitfield]
-#[derive(BitfieldSpecifier)]
-#[derive(Clone, Copy, Debug)]
+#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct CommandId(u16);
+
+impl From<u16> for CommandId {
+    fn from(x: u16) -> Self {
+        CommandId::new().with_0(x)
+    }
+}
+
+impl From<CommandId> for u16 {
+    fn from(x: CommandId) -> Self {
+        x.get_0()
+    }
+}
 
 #[derive(BitfieldSpecifier)]
 #[bits = 2]
