@@ -11,9 +11,19 @@ use modular_bitfield::prelude::*;
 pub struct QueueSize(u16);
 
 #[bitfield]
-#[derive(BitfieldSpecifier)]
+#[derive(BitfieldSpecifier, Clone, Copy)]
 #[repr(transparent)]
 pub struct QueueId(u16);
+
+impl QueueId {
+    pub const ADMIN: Self = Self::new();
+}
+
+impl From<QueueId> for usize {
+    fn from(qi: QueueId) -> Self {
+        qi.get_0().into()
+    }
+}
 
 #[bitfield]
 #[derive(BitfieldSpecifier, Clone, Copy, Debug)]
