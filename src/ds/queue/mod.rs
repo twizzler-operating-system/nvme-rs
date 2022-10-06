@@ -19,9 +19,21 @@ impl QueueId {
     pub const ADMIN: Self = Self::new();
 }
 
+impl From<u16> for QueueId {
+    fn from(x: u16) -> Self {
+        QueueId::new().with_0(x)
+    }
+}
+
 impl From<QueueId> for usize {
     fn from(qi: QueueId) -> Self {
         qi.get_0().into()
+    }
+}
+
+impl From<QueueId> for u16 {
+    fn from(qi: QueueId) -> Self {
+        qi.get_0()
     }
 }
 
