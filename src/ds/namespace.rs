@@ -2,6 +2,12 @@
 #[repr(transparent)]
 pub struct NamespaceId(u32);
 
+impl NamespaceId {
+    pub fn new(id: impl Into<u32>) -> Self {
+        Self(id.into())
+    }
+}
+
 pub struct NamespaceList<'a, const BYTES: usize> {
     data: &'a [u8; BYTES],
 }
@@ -30,6 +36,9 @@ impl<'a, const BYTES: usize> Iterator for NamespaceListIter<'a, BYTES> {
         }
         let by = self.list.data[self.pos..(self.pos + 4)].as_ptr() as *const u32;
         let val = unsafe { *by };
+        if val == 0 {
+            return None;
+        }
         self.pos += 4;
         Some(NamespaceId(val))
     }

@@ -49,6 +49,12 @@ pub struct StatusField {
     do_not_retry: B1,
 }
 
+impl StatusField {
+    pub fn is_error(&self) -> bool {
+        self.code() != 0
+    }
+}
+
 impl CommonCompletion {
     pub fn phase(&self) -> bool {
         self.status.phase()

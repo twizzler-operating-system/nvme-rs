@@ -8,7 +8,8 @@ pub struct VirtualRegion<P: PhysicalPageCollection> {
 }
 
 pub trait PhysicalPageCollection {
-    fn get_prp_list_or_buffer(&mut self) -> Option<PrpListOrBuffer>;
+    type DmaType;
+    fn get_prp_list_or_buffer(&mut self, dma: Self::DmaType) -> Option<PrpListOrBuffer>;
     fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr>;
 }
 
@@ -22,14 +23,14 @@ impl PrpListOrBuffer {
     pub fn address(&self) -> Address {
         match self {
             PrpListOrBuffer::PrpList(a) => *a,
-            PrpListOrBuffer::PrpBuffer(a) => *a,
+            PrpListOrBuffer::Buffer(a) => *a,
         }
     }
 
     pub fn is_list(&self) -> bool {
         match self {
             PrpListOrBuffer::PrpList(_) => true,
-            PrpListOrBuffer::PrpBuffer(_) => false,
+            PrpListOrBuffer::Buffer(_) => false,
         }
     }
 }
@@ -61,8 +62,8 @@ impl<P: PhysicalPageCollection> VirtualRegion<P> {
         self.virt as *mut T
     }
 
-    pub fn get_prp_list_or_buffer(&mut self) -> Option<PrpListOrBuffer> {
-        self.phys_page_list.get_prp_list_or_buffer()
+    pub fn get_prp_list_or_buffer<D>(&mut self, dma: P::DmaType) -> Option<PrpListOrBuffer> {
+        self.phys_page_list.get_prp_list_or_buffer(dma)
     }
 
     pub fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr> {

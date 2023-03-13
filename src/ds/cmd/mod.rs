@@ -4,5 +4,5 @@ pub mod admin;
 
 pub enum PrpListOrBuffer {
     PrpList(Address),
-    PrpBuffer(Address),
+    Buffer(Address),
 }

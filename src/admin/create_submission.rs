@@ -55,7 +55,7 @@ impl CreateIOSubmissionQueue {
                 .with_cqid(cqid),
             prp: prp.address(),
             cdw0: CommandDword0::build(
-                AdminCommand::CreateCompletionQueue.into(),
+                AdminCommand::CreateSubmissionQueue.into(),
                 cid,
                 FuseSpec::Normal,
                 Psdt::Prp,
