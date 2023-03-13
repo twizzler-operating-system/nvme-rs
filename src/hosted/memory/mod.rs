@@ -9,7 +9,11 @@ pub struct VirtualRegion<P: PhysicalPageCollection> {
 
 pub trait PhysicalPageCollection {
     type DmaType;
-    fn get_prp_list_or_buffer(&mut self, dma: Self::DmaType) -> Option<PrpListOrBuffer>;
+    fn get_prp_list_or_buffer(
+        &mut self,
+        prp_embed: &mut [u64],
+        dma: Self::DmaType,
+    ) -> Option<PrpListOrBuffer>;
     fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr>;
 }
 
@@ -62,8 +66,12 @@ impl<P: PhysicalPageCollection> VirtualRegion<P> {
         self.virt as *mut T
     }
 
-    pub fn get_prp_list_or_buffer<D>(&mut self, dma: P::DmaType) -> Option<PrpListOrBuffer> {
-        self.phys_page_list.get_prp_list_or_buffer(dma)
+    pub fn get_prp_list_or_buffer<D>(
+        &mut self,
+        prp_embed: &mut [u64],
+        dma: P::DmaType,
+    ) -> Option<PrpListOrBuffer> {
+        self.phys_page_list.get_prp_list_or_buffer(prp_embed, dma)
     }
 
     pub fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr> {
