@@ -54,18 +54,6 @@ impl From<CommandId> for u16 {
     }
 }
 
-impl From<u16> for QueueId {
-    fn from(x: u16) -> Self {
-        QueueId::new().with_0(x)
-    }
-}
-
-impl From<QueueId> for u16 {
-    fn from(x: QueueId) -> Self {
-        x.get_0()
-    }
-}
-
 impl From<u16> for QueueSize {
     fn from(x: u16) -> Self {
         QueueSize::new().with_0(x)
