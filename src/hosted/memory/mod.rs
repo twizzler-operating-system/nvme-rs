@@ -7,14 +7,38 @@ pub struct VirtualRegion<P: PhysicalPageCollection> {
     len: usize,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum PrpMode {
+    Single,
+    Double,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub enum DptrMode {
+    Prp(PrpMode),
+    Sgl,
+}
+
 pub trait PhysicalPageCollection {
     type DmaType;
     fn get_prp_list_or_buffer(
         &mut self,
-        prp_embed: &mut [u64],
+        mode: PrpMode,
         dma: Self::DmaType,
     ) -> Option<PrpListOrBuffer>;
-    fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr>;
+
+    fn get_dptr(&mut self, mode: DptrMode, dma: Self::DmaType) -> Option<Dptr> {
+        if let DptrMode::Prp(prp_mode) = mode {
+            let prp = self.get_prp_list_or_buffer(prp_mode, dma)?;
+            match prp {
+                PrpListOrBuffer::PrpList(address) => Some(Dptr::Prp(address, 0)),
+                PrpListOrBuffer::Buffer(address) => Some(Dptr::Prp(address, 0)),
+                PrpListOrBuffer::PrpFirstAndList(first, list) => Some(Dptr::Prp(first, list)),
+            }
+        } else {
+            todo!()
+        }
+    }
 }
 
 pub enum CacheType {
@@ -27,6 +51,7 @@ impl PrpListOrBuffer {
     pub fn address(&self) -> Address {
         match self {
             PrpListOrBuffer::PrpList(a) => *a,
+            PrpListOrBuffer::PrpFirstAndList(_, _) => panic!("cannot get single address"),
             PrpListOrBuffer::Buffer(a) => *a,
         }
     }
@@ -34,6 +59,7 @@ impl PrpListOrBuffer {
     pub fn is_list(&self) -> bool {
         match self {
             PrpListOrBuffer::PrpList(_) => true,
+            PrpListOrBuffer::PrpFirstAndList(_, _) => true,
             PrpListOrBuffer::Buffer(_) => false,
         }
     }
@@ -68,13 +94,13 @@ impl<P: PhysicalPageCollection> VirtualRegion<P> {
 
     pub fn get_prp_list_or_buffer<D>(
         &mut self,
-        prp_embed: &mut [u64],
+        mode: PrpMode,
         dma: P::DmaType,
     ) -> Option<PrpListOrBuffer> {
-        self.phys_page_list.get_prp_list_or_buffer(prp_embed, dma)
+        self.phys_page_list.get_prp_list_or_buffer(mode, dma)
     }
 
-    pub fn get_dptr(&mut self, sgl_allowed: bool) -> Option<Dptr> {
-        self.phys_page_list.get_dptr(sgl_allowed)
+    pub fn get_dptr(&mut self, mode: DptrMode, dma: P::DmaType) -> Option<Dptr> {
+        self.phys_page_list.get_dptr(mode, dma)
     }
 }
