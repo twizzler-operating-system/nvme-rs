@@ -1,6 +1,9 @@
 mod dataset;
 mod read;
 
+pub use dataset::{AccessFrequency, AccessLatency};
+pub use read::{ReadCommand, ReadDword13};
+
 #[repr(u8)]
 pub enum NvmCommand {
     Read = 2,
