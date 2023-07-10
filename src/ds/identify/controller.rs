@@ -130,6 +130,7 @@ impl Default for IdentifyControllerDataStructure {
     }
 }
 
+#[cfg(not(arch = "aarch64"))]
 const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
 
 #[bitfield(bits = 8)]
