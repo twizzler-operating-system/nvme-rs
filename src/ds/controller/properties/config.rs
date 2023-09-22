@@ -1,5 +1,6 @@
 use modular_bitfield::prelude::*;
 
+#[derive(Copy, Clone)]
 #[bitfield(bits = 32)]
 #[repr(u32)]
 pub struct ControllerConfig {
@@ -17,7 +18,7 @@ pub struct ControllerConfig {
     res1: B7,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Copy, Clone, Debug, BitfieldSpecifier)]
 #[bits = 3]
 pub enum IOCommandSet {
     NVMCommandSet,
@@ -25,7 +26,7 @@ pub enum IOCommandSet {
     AdminOnly = 0b111,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Copy, Clone, Debug, BitfieldSpecifier)]
 #[bits = 3]
 pub enum ArbitrationMechanism {
     RoundRobin,
@@ -33,7 +34,7 @@ pub enum ArbitrationMechanism {
     VendorSpecific = 0b111,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Copy, Clone, Debug, BitfieldSpecifier)]
 #[bits = 2]
 pub enum ShutdownNotification {
     NoNotification,
