@@ -1,4 +1,7 @@
-#![feature(option_result_unwrap_unchecked)]
+
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(unused_imports)]
 
 pub mod admin;
 pub mod ds;
