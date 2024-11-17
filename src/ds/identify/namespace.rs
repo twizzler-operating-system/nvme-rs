@@ -1,5 +1,4 @@
-use core::cmp::min;
-use core::fmt::Debug;
+use core::{cmp::min, fmt::Debug};
 
 use modular_bitfield::prelude::*;
 

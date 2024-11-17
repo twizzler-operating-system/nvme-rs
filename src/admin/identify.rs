@@ -1,3 +1,5 @@
+use modular_bitfield::prelude::*;
+
 use crate::ds::{
     cmd::admin::AdminCommand,
     controller::ControllerId,
@@ -8,8 +10,6 @@ use crate::ds::{
     },
     uuid::UuidIndex,
 };
-
-use modular_bitfield::prelude::*;
 #[bitfield(bits = 32)]
 #[repr(u32)]
 struct IdentifyDword10 {

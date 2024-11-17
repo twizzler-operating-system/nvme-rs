@@ -1,5 +1,9 @@
 use modular_bitfield::prelude::*;
 
+use super::{
+    dataset::{AccessFrequency, AccessLatency},
+    NvmCommand,
+};
 use crate::ds::{
     cmd::{admin::AdminCommand, PrpListOrBuffer},
     namespace::NamespaceId,
@@ -8,11 +12,6 @@ use crate::ds::{
         CommandId, QueueId, QueueSize,
     },
     Address, InterruptVector,
-};
-
-use super::{
-    dataset::{AccessFrequency, AccessLatency},
-    NvmCommand,
 };
 
 #[bitfield(bits = 32)]
