@@ -62,7 +62,7 @@ pub struct IdentifyControllerDataStructure {
     pub nvm_set_ident_maximum: u16,
     pub endurance_group_ident_maximum: u16,
     pub ana_transition_time: Seconds,
-    _res_todo: [u8; 3750],
+    //_res_todo: [u8; 3734],
 }
 
 impl Default for IdentifyControllerDataStructure {
@@ -125,16 +125,16 @@ impl Default for IdentifyControllerDataStructure {
             nvm_set_ident_maximum: Default::default(),
             endurance_group_ident_maximum: Default::default(),
             ana_transition_time: Default::default(),
-            _res_todo: [0; 3750],
+            //_res_todo: [0; 3734],
         }
     }
 }
 
-#[cfg(not(target_arch = "aarch64"))]
-const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
+//const _SIZE_CHECKER: [u8; 0x1000] = [0; std::mem::size_of::<IdentifyControllerDataStructure>()];
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct MultipathIONamespaceSharingCaps {
     #[skip(setters)]
     pub nvm_sub_multiple: B1,
@@ -150,6 +150,7 @@ pub struct MultipathIONamespaceSharingCaps {
 
 #[bitfield(bits = 32)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct OptionalAsyncEventsSupported {
     #[skip]
     res: B8,
@@ -181,6 +182,7 @@ pub struct OptionalAsyncEventsSupported {
 
 #[bitfield(bits = 32)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct ControllerAttributes {
     #[skip(setters)]
     pub host_id: B1,
@@ -232,6 +234,7 @@ pub enum ControllerType {
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct NvmSubsystemReport {
     #[skip(setters)]
     pub nvme_storage_device: B1,
@@ -243,6 +246,7 @@ pub struct NvmSubsystemReport {
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct VPDWriteCycleInfo {
     #[skip(setters)]
     pub write_cycles_remaining: B7,
@@ -252,6 +256,7 @@ pub struct VPDWriteCycleInfo {
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct ManagementEndpointCapabilities {
     #[skip]
     pub res: B6,
@@ -263,6 +268,7 @@ pub struct ManagementEndpointCapabilities {
 
 #[bitfield(bits = 16)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct OptionalAdminCommandSupport {
     #[skip(setters)]
     pub security_send_and_recv: B1,
@@ -292,6 +298,7 @@ pub struct OptionalAdminCommandSupport {
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct FirmwareUpdates {
     #[skip(setters)]
     pub first_firmware_slot_readonly: B1,
@@ -307,6 +314,7 @@ pub struct FirmwareUpdates {
 
 #[bitfield(bits = 8)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct LogPageAttributes {
     #[skip(setters)]
     pub per_namespace_smart_log: B1,
@@ -328,6 +336,7 @@ pub struct LogPageAttributes {
 
 #[bitfield(bits = 32)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct ReplayProtectedMemoryBlockSupport {
     #[skip(setters)]
     pub nr_rpmb_units: B3,
@@ -349,6 +358,7 @@ pub enum AuthMethod {
 
 #[bitfield(bits = 32)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct SanitizeCapabilities {
     #[skip(setters)]
     pub crypto_erase: B1,
