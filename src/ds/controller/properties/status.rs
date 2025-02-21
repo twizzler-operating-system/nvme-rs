@@ -1,5 +1,6 @@
 use modular_bitfield::prelude::*;
 
+#[derive(Clone, Copy)]
 #[bitfield(bits = 32)]
 #[repr(u32)]
 pub struct ControllerStatus {
@@ -19,7 +20,7 @@ pub struct ControllerStatus {
     _res: B25,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Clone, Copy, BitfieldSpecifier)]
 #[bits = 2]
 pub enum ShutdownStatus {
     NormalOperation,

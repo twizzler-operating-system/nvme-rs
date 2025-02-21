@@ -1,5 +1,6 @@
 use modular_bitfield::prelude::*;
 
+#[derive(Clone, Copy)]
 #[bitfield(bits = 32)]
 pub struct AdminQueueAttributes {
     pub submission_queue_size: B12,

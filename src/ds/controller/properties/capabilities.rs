@@ -2,6 +2,7 @@ use modular_bitfield::prelude::*;
 
 use crate::ds::HalfSeconds;
 
+#[derive(Clone, Copy)]
 #[bitfield(bits = 64)]
 #[repr(u64)]
 pub struct ControllerCap {
@@ -41,7 +42,7 @@ pub struct ControllerCap {
     res2: B3,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Clone, Copy, BitfieldSpecifier, Debug)]
 #[bits = 2]
 pub enum ControllerPowerScope {
     NotReported,
