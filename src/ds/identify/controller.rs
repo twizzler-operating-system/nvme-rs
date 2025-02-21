@@ -45,9 +45,9 @@ pub struct IdentifyControllerDataStructure {
     pub critical_composite_temp_threshold: u16,
     pub max_time_for_firmware_activation: OneHundredMilliseconds,
     pub host_memory_buffer_preferred_size: u32,
-    pub host_memory_buffer_minimum_size: u32,
-    pub total_nvm_capacity: u128,
-    pub unallocated_nvm_capacity: u128,
+    pub host_memory_buffer_minimum_size: [u16; 2],
+    pub total_nvm_capacity: [u32; 4],
+    pub unallocated_nvm_capacity: [u32; 4],
     pub replay_protected_memory_block_support: ReplayProtectedMemoryBlockSupport,
     pub extended_device_self_test_time: Minutes,
     pub device_self_test_options: u8,
@@ -61,8 +61,20 @@ pub struct IdentifyControllerDataStructure {
     pub host_memory_buffer_max_desc_entries: u16,
     pub nvm_set_ident_maximum: u16,
     pub endurance_group_ident_maximum: u16,
-    pub ana_transition_time: Seconds,
-    _res_todo: [u8; 3750],
+    pub res3: [u8; 170],
+    pub sub_queue_entry_size: u8,
+    pub com_queue_entry_size: u8,
+    pub max_outstanding_cmds: u16,
+    pub number_of_namespaces: u32,
+    pub optional_cmd_support: u16,
+    pub fused_operation_support: u16,
+    pub format_nvm_attributes: u8,
+    pub volatile_write_cache: u8,
+    pub atomic_write_unit_normal: u16,
+    pub atomic_write_unit_pfail: u16,
+    pub _unsupported: [u8; 6],
+    pub sgl_support: SglSupport,
+    _res_todo: [u8; 3556],
 }
 
 impl Default for IdentifyControllerDataStructure {
@@ -124,8 +136,20 @@ impl Default for IdentifyControllerDataStructure {
             host_memory_buffer_max_desc_entries: Default::default(),
             nvm_set_ident_maximum: Default::default(),
             endurance_group_ident_maximum: Default::default(),
-            ana_transition_time: Default::default(),
-            _res_todo: [0; 3750],
+            res3: [0; 170],
+            sub_queue_entry_size: Default::default(),
+            com_queue_entry_size: Default::default(),
+            max_outstanding_cmds: Default::default(),
+            number_of_namespaces: Default::default(),
+            optional_cmd_support: Default::default(),
+            fused_operation_support: Default::default(),
+            format_nvm_attributes: Default::default(),
+            volatile_write_cache: Default::default(),
+            atomic_write_unit_normal: Default::default(),
+            atomic_write_unit_pfail: Default::default(),
+            _unsupported: Default::default(),
+            sgl_support: Default::default(),
+            _res_todo: [0; 3556],
         }
     }
 }
@@ -181,6 +205,42 @@ pub struct OptionalAsyncEventsSupported {
 
 #[bitfield(bits = 32)]
 #[derive(Default, Clone, Debug)]
+#[repr(C)]
+pub struct SglSupport {
+    #[skip]
+    res: B11,
+    #[skip(setters)]
+    pub sgl_address_offset_supported: B1,
+    #[skip(setters)]
+    pub mptr_sgl_desc_support: B1,
+    #[skip(setters)]
+    pub lldtl: B1,
+    #[skip(setters)]
+    pub mba: B1,
+    #[skip(setters)]
+    pub sbbds: B1,
+    #[skip(setters)]
+    pub sdt: B8,
+    #[skip]
+    pub res2: B5,
+    #[skip(setters)]
+    pub keyed_datablock_support: B1,
+    #[skip(setters)]
+    pub sgl_support: SglSupportType,
+}
+
+#[derive(BitfieldSpecifier, Clone, Debug)]
+#[bits = 2]
+pub enum SglSupportType {
+    Unsupported,
+    SupportedUnaligned,
+    SupportedAligned,
+    Reserved,
+}
+
+#[bitfield(bits = 32)]
+#[derive(Default, Clone, Debug)]
+#[repr(C)]
 pub struct ControllerAttributes {
     #[skip(setters)]
     pub host_id: B1,

@@ -38,7 +38,7 @@ impl From<QueueId> for u16 {
 }
 
 #[bitfield]
-#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
+#[derive(BitfieldSpecifier, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct CommandId(u16);
 
