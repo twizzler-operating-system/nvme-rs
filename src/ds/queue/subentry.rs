@@ -1,10 +1,9 @@
-use std::ops::Add;
+#![allow(dead_code)]
 
 use modular_bitfield::prelude::*;
 
-use crate::ds::{namespace::NamespaceId, sgl::SglDescriptor, Address};
-
 use super::CommandId;
+use crate::ds::{namespace::NamespaceId, sgl::SglDescriptor, Address};
 // 2b::3.3.3.1
 
 #[bitfield(bits = 32)]

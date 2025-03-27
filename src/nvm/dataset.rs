@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use modular_bitfield::prelude::*;
 
 #[derive(BitfieldSpecifier, Debug, Clone, Copy, Default)]
@@ -25,6 +27,7 @@ pub enum AccessFrequency {
     OverwriteSoon,
 }
 
+use super::NvmCommand;
 use crate::ds::{
     namespace::NamespaceId,
     queue::{
@@ -32,8 +35,6 @@ use crate::ds::{
         CommandId,
     },
 };
-
-use super::NvmCommand;
 
 #[bitfield(bits = 32)]
 #[repr(u32)]

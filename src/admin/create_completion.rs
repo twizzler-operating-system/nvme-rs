@@ -1,14 +1,13 @@
+#![allow(dead_code)]
 use modular_bitfield::prelude::*;
 
-use crate::{
-    ds::{
-        cmd::{admin::AdminCommand, PrpListOrBuffer},
-        queue::{
-            subentry::{CommandDword0, CommonCommand, Dptr, FuseSpec, Psdt},
-            CommandId, QueueId, QueueSize,
-        },
-        Address, InterruptVector,
+use crate::ds::{
+    cmd::{admin::AdminCommand, PrpListOrBuffer},
+    queue::{
+        subentry::{CommandDword0, CommonCommand, Dptr, FuseSpec, Psdt},
+        CommandId, QueueId, QueueSize,
     },
+    Address, InterruptVector,
 };
 
 // REF: 2b::5.4
@@ -16,7 +15,9 @@ use crate::{
 #[bitfield(bits = 32)]
 #[repr(u32)]
 struct CreateIOCompletionQueueDword10 {
+    #[allow(dead_code)]
     qid: QueueId,
+    #[allow(dead_code)]
     qsz: QueueSize,
 }
 

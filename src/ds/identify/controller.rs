@@ -1,6 +1,8 @@
+#![allow(dead_code)]
+
 use modular_bitfield::prelude::*;
 
-use crate::ds::{Microseconds, Minutes, OneHundredMilliseconds, Seconds};
+use crate::ds::{Microseconds, Minutes, OneHundredMilliseconds};
 
 #[derive(Clone, Debug)]
 #[repr(C)]

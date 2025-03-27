@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use modular_bitfield::prelude::*;
 
 pub struct NamespaceIdentBuffer {
