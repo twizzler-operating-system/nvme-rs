@@ -42,7 +42,7 @@ pub struct ControllerCap {
     res2: B3,
 }
 
-#[derive(Clone, Copy, BitfieldSpecifier, Debug)]
+#[derive(Clone, Copy, Specifier, Debug)]
 #[bits = 2]
 pub enum ControllerPowerScope {
     NotReported,

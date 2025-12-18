@@ -1,6 +1,6 @@
 use modular_bitfield::prelude::*;
 
-#[derive(BitfieldSpecifier)]
+#[derive(Specifier)]
 #[bits = 8]
 pub enum FeatureId {
     Arbitration = 1,

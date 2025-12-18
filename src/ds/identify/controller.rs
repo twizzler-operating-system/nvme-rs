@@ -231,7 +231,7 @@ pub struct SglSupport {
     pub sgl_support: SglSupportType,
 }
 
-#[derive(BitfieldSpecifier, Clone, Debug)]
+#[derive(Specifier, Clone, Debug)]
 #[bits = 2]
 pub enum SglSupportType {
     Unsupported,
@@ -403,7 +403,7 @@ pub struct ReplayProtectedMemoryBlockSupport {
     pub access_size: B8,
 }
 
-#[derive(BitfieldSpecifier, Clone, Debug)]
+#[derive(Specifier, Clone, Debug)]
 #[bits = 3]
 pub enum AuthMethod {
     HmacSha256,

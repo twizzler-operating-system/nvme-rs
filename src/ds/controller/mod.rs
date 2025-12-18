@@ -1,7 +1,7 @@
 use modular_bitfield::prelude::*;
 
 #[bitfield(bits = 16)]
-#[derive(BitfieldSpecifier)]
+#[derive(Specifier)]
 #[repr(transparent)]
 pub struct ControllerId(u16);
 

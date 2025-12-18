@@ -27,7 +27,7 @@ impl CommandDword0 {
     }
 }
 
-#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
+#[derive(Specifier, Clone, Copy, Debug)]
 #[bits = 2]
 pub enum Psdt {
     Prp,
@@ -35,7 +35,7 @@ pub enum Psdt {
     SglAndMeta,
 }
 
-#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
+#[derive(Specifier, Clone, Copy, Debug)]
 #[bits = 2]
 pub enum FuseSpec {
     Normal,

@@ -52,7 +52,7 @@ impl From<Seconds> for Duration {
 use modular_bitfield::prelude::*;
 
 #[bitfield]
-#[derive(BitfieldSpecifier, Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(Specifier, Default, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct HalfSeconds(u8);
 
 impl From<HalfSeconds> for Duration {

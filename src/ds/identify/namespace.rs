@@ -1,5 +1,4 @@
-use core::cmp::min;
-use core::fmt::Debug;
+use core::{cmp::min, fmt::Debug};
 
 use modular_bitfield::prelude::*;
 
@@ -74,7 +73,7 @@ impl LbaFormat {
     }
 }
 
-#[derive(BitfieldSpecifier, Clone, Debug)]
+#[derive(Specifier, Clone, Debug)]
 #[bits = 2]
 pub enum RelativePerformance {
     Best = 0,

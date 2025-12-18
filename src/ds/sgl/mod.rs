@@ -11,13 +11,13 @@ pub struct SglDescriptor {
 }
 
 #[bitfield(bits = 8)]
-#[derive(BitfieldSpecifier, Debug, Clone, Copy)]
+#[derive(Specifier, Debug, Clone, Copy)]
 struct SglIdentifier {
     sub_type: B4,
     desc_type: SglDescType,
 }
 
-#[derive(BitfieldSpecifier, Debug, Clone, Copy)]
+#[derive(Specifier, Debug, Clone, Copy)]
 #[bits = 4]
 enum SglDescType {
     DataBlock,
@@ -29,7 +29,7 @@ enum SglDescType {
     VendorSpecific = 0xf,
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Specifier)]
 #[bits = 4]
 enum SglSubType {
     Address,

@@ -3,7 +3,7 @@
 use modular_bitfield::prelude::*;
 
 #[bitfield(bits = 7)]
-#[derive(BitfieldSpecifier)]
+#[derive(Specifier)]
 pub struct UuidIndex(B7);
 
 impl From<Option<UuidIndex>> for UuidIndex {

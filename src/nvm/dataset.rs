@@ -2,7 +2,7 @@
 
 use modular_bitfield::prelude::*;
 
-#[derive(BitfieldSpecifier, Debug, Clone, Copy, Default)]
+#[derive(Specifier, Debug, Clone, Copy, Default)]
 #[bits = 2]
 pub enum AccessLatency {
     #[default]
@@ -12,7 +12,7 @@ pub enum AccessLatency {
     Low,
 }
 
-#[derive(BitfieldSpecifier, Debug, Clone, Copy, Default)]
+#[derive(Specifier, Debug, Clone, Copy, Default)]
 #[bits = 4]
 pub enum AccessFrequency {
     #[default]

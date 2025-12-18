@@ -18,7 +18,7 @@ pub struct ControllerConfig {
     res1: B7,
 }
 
-#[derive(Copy, Clone, BitfieldSpecifier, Debug)]
+#[derive(Copy, Clone, Specifier, Debug)]
 #[bits = 3]
 pub enum IOCommandSet {
     NVMCommandSet,
@@ -26,7 +26,7 @@ pub enum IOCommandSet {
     AdminOnly = 0b111,
 }
 
-#[derive(Copy, Clone, BitfieldSpecifier, Debug)]
+#[derive(Copy, Clone, Specifier, Debug)]
 #[bits = 3]
 pub enum ArbitrationMechanism {
     RoundRobin,
@@ -34,7 +34,7 @@ pub enum ArbitrationMechanism {
     VendorSpecific = 0b111,
 }
 
-#[derive(Copy, Clone, BitfieldSpecifier, Debug)]
+#[derive(Copy, Clone, Specifier, Debug)]
 #[bits = 2]
 pub enum ShutdownNotification {
     NoNotification,

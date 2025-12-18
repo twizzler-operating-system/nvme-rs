@@ -42,7 +42,7 @@ struct SqInfo {
 }
 
 #[bitfield(bits = 15)]
-#[derive(BitfieldSpecifier, Debug, Clone, Copy)]
+#[derive(Specifier, Debug, Clone, Copy)]
 pub struct StatusField {
     code: B8,
     code_type: B3,

@@ -20,7 +20,7 @@ pub struct ControllerStatus {
     _res: B25,
 }
 
-#[derive(Clone, Copy, BitfieldSpecifier)]
+#[derive(Clone, Copy, Specifier)]
 #[bits = 2]
 pub enum ShutdownStatus {
     NormalOperation,

@@ -6,12 +6,12 @@ pub mod subentry;
 use modular_bitfield::prelude::*;
 
 #[bitfield]
-#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
+#[derive(Specifier, Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct QueueSize(u16);
 
 #[bitfield]
-#[derive(BitfieldSpecifier, Clone, Copy, Debug)]
+#[derive(Specifier, Clone, Copy, Debug)]
 #[repr(transparent)]
 pub struct QueueId(u16);
 
@@ -38,7 +38,7 @@ impl From<QueueId> for u16 {
 }
 
 #[bitfield]
-#[derive(BitfieldSpecifier, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Specifier, Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct CommandId(u16);
 
@@ -66,7 +66,7 @@ impl From<QueueSize> for u16 {
     }
 }
 
-#[derive(BitfieldSpecifier)]
+#[derive(Specifier)]
 #[bits = 2]
 pub enum QueuePriority {
     Urgent,
