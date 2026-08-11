@@ -58,6 +58,11 @@ impl StatusField {
 }
 
 impl CommonCompletion {
+    /// Command-specific result. Set Features returns its allocated counts here.
+    pub fn dw0(&self) -> u32 {
+        self.dw0
+    }
+
     pub fn phase(&self) -> bool {
         self.status.phase()
     }
